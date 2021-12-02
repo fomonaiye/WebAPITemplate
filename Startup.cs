@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using WebAPITemplate.Configurations;
 using WebAPITemplate.Data;
 using WebAPITemplate.Data.Data;
+using WebAPITemplate.Data.IRepository;
+using WebAPITemplate.Data.Repository;
 
 namespace WebAPITemplate
 {
@@ -43,6 +45,7 @@ namespace WebAPITemplate
             });
 
             services.ConfigureAutoMapper();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(c =>
             {
@@ -51,7 +54,8 @@ namespace WebAPITemplate
 
             
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(op=>
+            op.SerializerSettings.ReferenceLoopHandling= Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
