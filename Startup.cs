@@ -17,6 +17,8 @@ using WebAPITemplate.Data;
 using WebAPITemplate.Data.Data;
 using WebAPITemplate.Data.IRepository;
 using WebAPITemplate.Data.Repository;
+using WebAPITemplate.Utililty.IServices;
+using WebAPITemplate.Utililty.Services;
 
 namespace WebAPITemplate
 {
@@ -46,7 +48,10 @@ namespace WebAPITemplate
 
             services.ConfigureAutoMapper();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+            services.AddScoped<IAuthManager, AuthManager>();
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPITemplate", Version = "v1" });
@@ -72,6 +77,7 @@ namespace WebAPITemplate
             app.UseCors("AllowAll");
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

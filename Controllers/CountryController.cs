@@ -49,7 +49,7 @@ namespace WebAPITemplate.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCountry(int id)
         {
-            throw new Exception("Error message");
+            //throw new Exception("Error message");
             var country = await _unitOfWork.Countries.Get(q => q.Id == id, include: q => q.Include(x => x.Hotels));
             var result = _mapper.Map<CountryDTO>(country);
             return Ok(result);
